@@ -1,4 +1,9 @@
 
+using Microsoft.EntityFrameworkCore;
+using WebAPI.Data;
+using WebAPI.Repositories;
+using WebAPI.Repositories.Interfaces;
+
 namespace WebAPI
 {
     public class Program
@@ -12,6 +17,13 @@ namespace WebAPI
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
+
+            builder.Services.AddDbContext<AppDbContext>(
+                    options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
+                );
+
+
+            builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
 
             var app = builder.Build();
 
